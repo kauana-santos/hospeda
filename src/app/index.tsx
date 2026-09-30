@@ -1,98 +1,83 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Text, View, StyleSheet, ScrollView, FlatList, Touchable, TouchableOpacity } from "react-native";
+import ProdutoCard from "./components/ProdutoCard/ProdutoCard";
+import { Link } from "expo-router";
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
+export default function Index() {
+  const PRODUTOS =
+  [
+  {
+    id: "1",
+    nome: "Wyndham Rio de Janeiro Barra",
+    descricao: "Achegante e funcional, ideal para estadias rápidas. Conta com cama de casal confortavel, ar-condicionado e Wi-Fi de alta velocidade.",
+    preco: "R$ 456",
+    imagem: "https://media.staticontent.com/media/pictures/8b878215-9ef5-41f8-a68d-e7b1b1005c7f/853x380?op=TRUNCATE&enlarge=false&gravity=ce_0_0&quality=80&dpr=1"
+  },
+  {
+    id: "2",
+    nome: "Lifestyle Laghetto Collection",
+    descricao: "Espaçoso e elegante, equipado com cama king size, varanda com vista para a cidade, minibar e área de trabalho.",
+    preco: "R$ 507",
+    imagem: "https://media.staticontent.com/media/pictures/12e46342-7737-487c-a2fb-85cba092d34e/853x380?op=TRUNCATE&enlarge=false&gravity=ce_0_0&quality=80&dpr=1"
+  },
+  {
+    id: "3",
+    nome: "Hotel Atlântico Praia",
+    descricao: "Experiência de luxo completa com hidromassagem, sala de estar integrada, cama super king e amenidades exclusivas.",
+    preco: "R$ 481",
+    imagem: "https://media.staticontent.com/media/pictures/21ea4569-3d9c-4e8b-80a1-2e10a7f26041/579x434?op=TRUNCATE&enlarge=false&gravity=nowe_0_0&quality=80&dpr=1"
+  },
+  {
+    id: "4",
+    nome: "Prodigy Santos Dumont by Wish",
+    descricao: "Perfeito para grupos ou famílias, oferecendo uma cama de casal e duas de solteiro com ambiente amplo e bem iluminado.",
+    preco: "R$ 600",
+    imagem: "https://media.staticontent.com/media/pictures/39c3b81e-be27-45a5-89d6-d8aeb1c3a6ae/579x434?op=TRUNCATE&enlarge=false&gravity=nowe_0_0&quality=80&dpr=1"
   }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+]
+
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
+    <ScrollView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Hospeda.com</Text>
+      </View>
+
+      <TouchableOpacity>
+        <Link href={"/Hospedagem"} asChild>
+          <FlatList
+          data={PRODUTOS}
+          keyExtractor={(item) => item.id}
+          renderItem={({item}) => (<ProdutoCard nome={item.nome} preco={item.preco} descricao={item.descricao} imagem={item.imagem}/>)}
+          />
+        </Link>
+      </TouchableOpacity>
+    </ScrollView>
+      
   );
 }
 
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
-  );
-}
 
 const styles = StyleSheet.create({
-  container: {
+  container:{
+    backgroundColor: "#fff",
+    width: "100%",
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+  header: {
+    height:60,
+    justifyContent:"center",
+    backgroundColor:"#280670",
+    marginBottom: 10,
+    
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
+  headerText:{
+    fontSize: 18,
+    fontWeight:"bold",
+    marginLeft: 15,
+    color: "#fff"
+  }
+  
 });
+
